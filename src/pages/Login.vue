@@ -152,7 +152,7 @@ export default {
 }
 .login_form {
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   width: 100%;
   padding: 0 30px;
   // https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing
