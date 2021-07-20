@@ -5,6 +5,8 @@ import VueRouter from "vue-router";
 // 可以从其他文件 import 进来
 import Login from '../pages/Login.vue';
 import Home from '../pages/Home.vue';
+import Welcome from '../pages/Welcome.vue';
+import Users from '../pages/user/Users.vue';
 Vue.use(VueRouter);
 // 2. 定义路由
 
@@ -29,7 +31,25 @@ const routes = [
         component: Home,
         meta: {
             title: "主页"
-        }
+        },
+        redirect: "/welcome",
+        children: [{
+                name: "welcome",
+                path: "/welcome",
+                component: Welcome,
+                meta: {
+                    title: "欢迎"
+                },
+            },
+            {
+                name: "users",
+                path: "/users",
+                component: Users,
+                meta: {
+                    title: "用户管理"
+                },
+            }
+        ]
     },
 
 ]

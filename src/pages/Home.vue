@@ -3,7 +3,7 @@
     <!-- 头部区域 -->
     <el-header>
       <div>
-        <img class="logo-img" src="../assets/rinn.png" alt="" />
+        <img class="logo-img" src="../assets/rinn.png" alt="" @click="toHome" />
         <span>电商后台管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
@@ -11,15 +11,18 @@
     <!-- 页面主体区域 -->
     <el-container>
       <!-- 侧标栏 -->
-      <el-aside width="200px">
-        <!--  -->
+      <el-aside :width="isCollapse ? '64px' : '200px'">
+        <div class="toggle-button" @click="toggleCollapse">|||</div>
         <el-menu
-          default-active="110"
+          :collapse="isCollapse"
+          :collapse-transition="false"
+          :default-active="activePath"
           unique-opened
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#409eef"
+          router
         >
           <!-- 一级导航 -->
           <el-submenu
@@ -37,8 +40,9 @@
             <!-- 二级导航 -->
             <el-menu-item
               v-for="subItem in item.children"
-              :index="subItem.id + ''"
+              :index="'/' + subItem.path"
               :key="subItem.id"
+              @click="saveNavState('/' + subItem.path)"
             >
               <!-- 二级导航模板区域 -->
               <template slot="title">
@@ -52,7 +56,10 @@
         </el-menu>
       </el-aside>
       <!-- 右侧内容主题 -->
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- 路由占位符 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -73,11 +80,16 @@ export default {
         101: "el-icon-s-shop",
         145: "el-icon-s-data",
       },
+      // 是否折叠
+      isCollapse: false,
+      // 被激活的路径地址
+      activePath: "",
     };
   },
   mounted() {
     // 获取所有的菜单
     this.getMenuList();
+    this.activePath = window.sessionStorage.getItem("activePath");
   },
   methods: {
     logout() {
@@ -92,6 +104,21 @@ export default {
         if (res.meta.status !== 200) this.$message.error(res.meta.msg);
         this.menuList = res.data;
       });
+    },
+    // 切换显示左侧效果
+    toggleCollapse() {
+      this.isCollapse = !this.isCollapse;
+    },
+    // 跳转首页
+    toHome() {
+      if (this.$route.path !== "/welcome") {
+        this.$router.push("/welcome");
+      }
+    },
+    // 保存左侧栏点击状态
+    saveNavState(activePath) {
+      window.sessionStorage.setItem("activePath", activePath);
+      this.activePath = activePath;
     },
   },
 };
@@ -119,6 +146,10 @@ export default {
 }
 .el-aside {
   background-color: rgb(84 92 100);
+  /* 定义过渡效果 */
+  transition: width 1s;
+  transition-timing-function: ease;
+
   .el-menu {
     border-right: none;
   }
@@ -129,5 +160,14 @@ export default {
 .logo-img {
   height: 50px;
   border-radius: 50%;
+}
+.toggle-button {
+  background-color: #4a5064;
+  font-size: 10px;
+  line-height: 36px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.2em;
+  cursor: pointer;
 }
 </style>
