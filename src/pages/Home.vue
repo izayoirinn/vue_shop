@@ -100,7 +100,7 @@ export default {
     // 获取所有的菜单
     getMenuList() {
       this.$http.get("menus").then(({ data: res }) => {
-        console.log("菜单列表:", res);
+        // console.log("菜单列表:", res);
         if (res.meta.status !== 200) this.$message.error(res.meta.msg);
         this.menuList = res.data;
       });
@@ -147,8 +147,8 @@ export default {
 .el-aside {
   background-color: rgb(84 92 100);
   /* 定义过渡效果 */
-  transition: width 1s;
-  transition-timing-function: ease;
+  transition: width 0.5s;
+  // transition-timing-function: ease;
 
   .el-menu {
     border-right: none;

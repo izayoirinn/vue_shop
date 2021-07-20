@@ -6,8 +6,8 @@ module.exports = {
         }
     },
     lintOnSave: false, // 关闭语法检查
-    // 开启代理服务器(方式一)
+   /*  // 开启代理服务器(方式一)
     devServer: {
         proxy: 'http://localhost:8888'
-    }
+    } */
 }
