@@ -92,6 +92,7 @@ export default {
     this.activePath = window.sessionStorage.getItem("activePath");
   },
   methods: {
+    // 退出登录
     logout() {
       // TODO 删除后端token
       window.sessionStorage.clear();
@@ -120,6 +121,8 @@ export default {
       window.sessionStorage.setItem("activePath", activePath);
       this.activePath = activePath;
     },
+
+    
   },
 };
 </script>

@@ -8,3 +8,6 @@ html,body,#app{
     margin-top: 20px;
     /* font-size: 12px; */
 }
+.el-pagination{
+    margin-top: 15px;
+}
