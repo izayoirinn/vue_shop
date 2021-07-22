@@ -89,6 +89,7 @@ export default {
   mounted() {
     // 获取所有的菜单
     this.getMenuList();
+    // 判断当前激活路径
     this.activePath = window.sessionStorage.getItem("activePath");
   },
   methods: {
@@ -127,7 +128,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 .el-container {
   height: 100%;
 }
@@ -172,5 +173,14 @@ export default {
   text-align: center;
   letter-spacing: 0.2em;
   cursor: pointer;
+}
+/////////////////////给子组件定义的样式//////////////////////////////
+// 卡片框和面包屑导航
+.el-breadcrumb {
+  margin-bottom: 15px;
+}
+.el-card {
+  width: 90%;
+  margin: auto;
 }
 </style>

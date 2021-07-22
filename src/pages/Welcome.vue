@@ -13,6 +13,9 @@ export default {
       username: "izayoirinn",
     };
   },
+  mounted(){
+    window.sessionStorage.removeItem('activePath');
+  }
 };
 </script>
 

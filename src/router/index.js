@@ -7,6 +7,9 @@ import Login from '../pages/Login.vue';
 import Home from '../pages/Home.vue';
 import Welcome from '../pages/Welcome.vue';
 import Users from '../pages/user/Users.vue';
+import Rights from '../pages/power/Rights.vue'
+import Roles from '../pages/power/Roles.vue'
+
 Vue.use(VueRouter);
 // 2. 定义路由
 
@@ -48,7 +51,23 @@ const routes = [
                 meta: {
                     title: "用户管理"
                 },
-            }
+            },
+            {
+                name: "rights",
+                path: "/rights",
+                component: Rights,
+                meta: {
+                    title: "权限管理"
+                },
+            },
+            {
+                name: "roles",
+                path: "/roles",
+                component: Roles,
+                meta: {
+                    title: "角色列表"
+                },
+            },
         ]
     },
 
