@@ -10,6 +10,7 @@ import Users from '../pages/user/Users.vue';
 import Rights from '../pages/power/Rights.vue'
 import Roles from '../pages/power/Roles.vue'
 import Category from '../pages/goods/Category.vue'
+import Params from '../pages/goods/Params.vue'
 
 Vue.use(VueRouter);
 // 2. 定义路由
@@ -81,6 +82,15 @@ const routes = [
                 component: Category,
                 meta: {
                     title: "商品分类"
+                },
+            },
+            /* 商品参数 */
+            {
+                name: "params",
+                path: "/params",
+                component: Params,
+                meta: {
+                    title: "商品参数"
                 },
             },
         ]
