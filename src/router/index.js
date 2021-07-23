@@ -9,6 +9,7 @@ import Welcome from '../pages/Welcome.vue';
 import Users from '../pages/user/Users.vue';
 import Rights from '../pages/power/Rights.vue'
 import Roles from '../pages/power/Roles.vue'
+import Category from '../pages/goods/Category.vue'
 
 Vue.use(VueRouter);
 // 2. 定义路由
@@ -36,7 +37,9 @@ const routes = [
             title: "主页"
         },
         redirect: "/welcome",
-        children: [{
+        children: [
+            /* 欢迎页 */
+            {
                 name: "welcome",
                 path: "/welcome",
                 component: Welcome,
@@ -44,6 +47,7 @@ const routes = [
                     title: "欢迎"
                 },
             },
+            /* 用户管理 */
             {
                 name: "users",
                 path: "/users",
@@ -52,6 +56,7 @@ const routes = [
                     title: "用户管理"
                 },
             },
+            /* 权限管理 */
             {
                 name: "rights",
                 path: "/rights",
@@ -60,12 +65,22 @@ const routes = [
                     title: "权限管理"
                 },
             },
+            /* 角色列表 */
             {
                 name: "roles",
                 path: "/roles",
                 component: Roles,
                 meta: {
                     title: "角色列表"
+                },
+            },
+            /* 商品分类 */
+            {
+                name: "categories",
+                path: "/categories",
+                component: Category,
+                meta: {
+                    title: "商品分类"
                 },
             },
         ]

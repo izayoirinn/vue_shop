@@ -10,5 +10,5 @@
     git branch
 4. less下载
     npm install less --save-dev
-    //这里需要指定版本，不能太高，如果太高后续容易报错。后面解答报错问题
+    //这里需要指定版本，不能太高，如果太高后续容易报错。
     npm install less-loader@6.0.0 --save-dev

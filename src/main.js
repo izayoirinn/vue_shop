@@ -14,9 +14,14 @@ import './assets/css/global.css';
 // 导入字体图标
 import './assets/fonts/iconfont.css';
 Vue.config.productionTip = false
+/* 引入树形表格 */
+import TreeTable from 'vue-table-with-tree-grid'
+Vue.component('tree-table', TreeTable);
+
 // 引入 axios
 import axios from 'axios';
 axios.defaults.baseURL = "http://timemeetyou.com:8889/api/private/v1/";
+// axios.defaults.baseURL = "https://www.liulongbin.top:8888/api/private/v1/";
 
 // 拦截器为请求头添加token属性
 axios.interceptors.request.use(config => {

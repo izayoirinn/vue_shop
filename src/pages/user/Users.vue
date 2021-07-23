@@ -37,7 +37,7 @@
       </el-row>
 
       <!-- 渲染表格数据 -->
-      <el-table :data="userList" stripe border>
+      <el-table v-loading="loading" :data="userList" stripe border>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="姓名" prop="username"></el-table-column>
         <el-table-column
@@ -251,6 +251,8 @@ export default {
         pagenum: 1,
         pagesize: 5,
       },
+      // 页面loading
+      loading: true,
       // 获取到的用户列表
       userList: [],
       // 用户总记录数
@@ -331,13 +333,14 @@ export default {
         .get("users", {
           params: this.queryInfo,
         })
-        .then(({ data: res }) => {
+        .then(({data:res}) => {
           // console.log("@Users", res);
           if (res.meta.status != 200)
             return this.$message.error("获取用户列表失败!");
           this.userList = res.data.users;
           this.total = res.data.total;
           this.currentPage = res.data.pagenum;
+          this.loading = false
         });
     },
     // 搜索显示用户信息,将页码置为1

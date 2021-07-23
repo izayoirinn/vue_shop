@@ -19,7 +19,11 @@
       </el-row>
 
       <!-- 角色列表区 -->
-      <el-table :data="roleList" border stripe>
+      <el-table 
+      v-loading="loading" 
+      :data="roleList" 
+      border stripe
+      >
         <el-table-column type="expand">
           <template v-slot="scope">
             <el-row
@@ -190,6 +194,8 @@ export default {
   name: "Roles",
   data() {
     return {
+      // 表格加载中
+      loading: true,
       // 所有角色列表数据
       roleList: [],
       // 控制分配权限对话框的显示与隐藏
@@ -271,6 +277,7 @@ export default {
         console.log("roleData:", res);
         if (res.meta.status != 200)
           return this.$message.error("获取权限角色列表失败!");
+        this.loading = false;
         this.roleList = res.data;
       });
     },
