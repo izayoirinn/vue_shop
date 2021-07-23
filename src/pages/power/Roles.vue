@@ -84,7 +84,11 @@
               @click="openEditRoleDialog(scope.row)"
               >编辑</el-button
             >
-            <el-button size="small" type="danger" icon="el-icon-delete"
+            <el-button
+              size="small"
+              type="danger"
+              icon="el-icon-delete"
+              @click="deleteRole(scope.row.id)"
               >删除</el-button
             >
             <el-button
@@ -419,10 +423,51 @@ export default {
     },
     // 发送请求到后端修改角色信息
     editRoleToBack() {
-      // 关闭对话框
-      this.editRoleDialogVisible = false;
+      // 参数信息验证
+      this.$refs["editRoleFormRef"].validate((valid) => {
+        if (valid) {
+          this.$http
+            .put("roles/" + this.editRoleId, this.editRoleFormData)
+            .then(({ data: res }) => {
+              console.log("delteRolesRes:", res);
+              if (res.meta.status != 200) {
+                return this.$message.error("修改角色信息失败");
+              }
+              this.$message.success("修改角色信息成功");
+              // 刷新页面数据
+              this.getRoleList();
+              // 关闭对话框
+              this.editRoleDialogVisible = false;
+            });
+        }
+      });
     },
     /*==== 修改角色基本信息 方法 end ==== */
+
+    /*==== 删除角色 方法 start ==== */
+    deleteRole(id) {
+      this.$confirm("此操作将永久删除该角色, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          // 发送ajax请求
+          this.$http.delete("/roles/" + id).then(({ data: res }) => {
+            // 删除返回结果
+            console.log("deleteRole:", res);
+            if (res.meta.status != 200)
+              return this.$message.error("删除角色失败");
+
+            this.$message.success("删除成功!");
+            // 刷新角色列表
+            this.getRoleList();
+          });
+        })
+        .catch(() => {});
+    },
+
+    /*==== 删除角色 方法 end ==== */
   },
 };
 </script>
