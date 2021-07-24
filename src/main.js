@@ -20,8 +20,8 @@ Vue.component('tree-table', TreeTable);
 
 // 引入 axios
 import axios from 'axios';
-axios.defaults.baseURL = "http://timemeetyou.com:8889/api/private/v1/";
-// axios.defaults.baseURL = "https://www.liulongbin.top:8888/api/private/v1/";
+// axios.defaults.baseURL = "http://timemeetyou.com:8889/api/private/v1/";
+axios.defaults.baseURL = "http://127.0.0.1:8888/api/private/v1/";
 
 // 拦截器为请求头添加token属性
 axios.interceptors.request.use(config => {

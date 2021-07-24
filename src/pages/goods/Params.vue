@@ -41,7 +41,40 @@
           >
           <!-- 动态参数表格展示 -->
           <el-table stripe border :data="manyTabData">
-            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="expand">
+              <!-- 展开列数据 -->
+              <template v-slot="scoped">
+                <!-- 遍历分类参数的tag -->
+                <el-tag
+                  closable
+                  :key="index"
+                  @close="deleteAttrTag(index, scoped.row)"
+                  v-for="(item, index) in scoped.row.attr_vals"
+                >
+                  {{ item }}
+                </el-tag>
+                <!-- 新增tag -->
+                <!-- 添加tag的输入框 -->
+                <el-input
+                  class="input-new-tag"
+                  v-if="scoped.row.inputVisible"
+                  v-model="scoped.row.inputValue"
+                  ref="saveTagInputRef"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm(scoped.row)"
+                  @blur="handleInputConfirm(scoped.row)"
+                >
+                </el-input>
+                <!-- 添加tag的按钮 -->
+                <el-button
+                  v-else
+                  class="button-new-tag"
+                  size="small"
+                  @click="showInput(scoped.row)"
+                  >+ New Tag</el-button
+                >
+              </template>
+            </el-table-column>
             <el-table-column label="#" type="index"></el-table-column>
             <el-table-column
               label="参数名称"
@@ -57,7 +90,11 @@
                   icon="el-icon-edit"
                   >编辑</el-button
                 >
-                <el-button type="danger" size="mini" icon="el-icon-delete"
+                <el-button
+                  @click="deleteParams(scoped.row.attr_id)"
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
                   >删除</el-button
                 >
               </template>
@@ -74,9 +111,42 @@
             size="mini"
             >添加属性</el-button
           >
-          <!-- 静态属性表格展示 -->
+          <!-- TODO 共用一个表格展示 静态属性表格展示 -->
           <el-table stripe border :data="onlyTabData">
-            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="expand">
+                 <!-- 展开列数据 -->
+              <template v-slot="scoped">
+                <!-- 遍历分类参数的tag -->
+                <el-tag
+                  closable
+                  :key="index"
+                  @close="deleteAttrTag(index, scoped.row)"
+                  v-for="(item, index) in scoped.row.attr_vals"
+                >
+                  {{ item }}
+                </el-tag>
+                <!-- 新增tag -->
+                <!-- 添加tag的输入框 -->
+                <el-input
+                  class="input-new-tag"
+                  v-if="scoped.row.inputVisible"
+                  v-model="scoped.row.inputValue"
+                  ref="saveTagInputRef"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm(scoped.row)"
+                  @blur="handleInputConfirm(scoped.row)"
+                >
+                </el-input>
+                <!-- 添加tag的按钮 -->
+                <el-button
+                  v-else
+                  class="button-new-tag"
+                  size="small"
+                  @click="showInput(scoped.row)"
+                  >+ New Tag</el-button
+                >
+              </template>
+            </el-table-column>
             <el-table-column label="#" type="index"></el-table-column>
             <el-table-column
               label="属性名称"
@@ -92,7 +162,11 @@
                   icon="el-icon-edit"
                   >编辑</el-button
                 >
-                <el-button type="danger" size="mini" icon="el-icon-delete"
+                <el-button
+                  @click="deleteParams(scoped.row.attr_id)"
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
                   >删除</el-button
                 >
               </template>
@@ -193,6 +267,9 @@ export default {
         ],
       },
       /* ==== 修改分类参数 end ===== */
+      inputVisible: false,
+      inputValue: "",
+      /* ==== 修改分类参数 end ===== */
     };
   },
   computed: {
@@ -225,7 +302,7 @@ export default {
       this.$http.get("categories").then(({ data: res }) => {
         console.log("categoryList:", res);
         if (res.meta.status != 200) {
-          return this.$message.error("获取分类列表错误");
+          return this.$message.error("获取分类列表失败");
         }
         this.categoryList = res.data;
       });
@@ -235,30 +312,56 @@ export default {
       // 不是三级分类
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = [];
+        // 清除原来的选择
+        this.clearShowTabData();
         return;
       }
+
+      // 获取分类
       this.getCategoryParams();
     },
 
     // 切换标签页触发的函数
     handleTabClick() {
+      // 清除原来的选择
+      // this.clearShowTabData();
       console.log(this.activeTabName);
       this.getCategoryParams();
+    },
+    clearShowTabData() {
+      this.manyTabData = [];
+      this.onlyTabData = [];
     },
     /* ==== 添加分类参数 start ===== */
 
     // 获取分类参数信息
     getCategoryParams() {
       // 三级分类,获取该分类下的参数信息
+      if (this.computedCateId === -1) {
+        // console.log("没有选中分类id");
+        return;
+      }
       this.$http
         .get(`categories/${this.computedCateId}/attributes`, {
           params: { sel: this.activeTabName },
         })
         .then(({ data: res }) => {
-          console.log("分类参数信息:", res);
           if (res.meta.status != 200) {
             return this.$message.error("获取分类参数信息错误");
           }
+          res.data.forEach((element) => {
+            // attr_vals为空直接返回空数组
+            element.attr_vals = element.attr_vals
+              ? element.attr_vals.split(" ")
+              : [];
+
+            // 给返回结果添加新的属性
+            // 输入框默认不显示
+            element.inputVisible = false;
+            // 绑定的数据,默认为false
+            element.inputValue = "";
+          });
+          console.log("分类参数信息:", res);
           // 保存返回得到的数据
           if (this.activeTabName === "many") {
             this.manyTabData = res.data;
@@ -286,7 +389,7 @@ export default {
               }
               // 添加参数信息成功
               this.$notify.success({
-                title: "成功",
+                title: "添加成功",
                 message: "添加新的参数信息成功",
               });
               // 重新刷新数据
@@ -321,8 +424,154 @@ export default {
       // this.$refs.editFormRef.resetFields();
       this.editFormData = {};
     },
-    editParams() {},
+    // 发起ajax请求，修改参数信息
+    editParams() {
+      console.log("需要提交的需要修改的数据", this.editFormData);
+      // 对表单校验
+      this.$refs.editFormRef.validate((valid) => {
+        if (valid) {
+          // 参数通过验证,发起修改请求
+          this.$http
+            .put(
+              `categories/${this.computedCateId}/attributes/${this.editFormData.attr_id}`,
+              {
+                attr_name: this.editFormData.attr_name,
+                attr_sel: this.editFormData.attr_sel,
+              }
+            )
+            .then(({ data: res }) => {
+              console.log("修改分类参数返回信息:", res);
+              if (res.meta.status !== 200) {
+                return this.$message.error("修改参数信息失败");
+              }
+              // 修改参数信息成功
+              this.$notify.success({
+                title: "修改成功",
+                message: "修改参数信息成功",
+              });
+              // 重新刷新数据
+              this.getCategoryParams();
+              // 关闭对话框
+              this.editDialogVisible = false;
+            });
+        }
+      });
+    },
     /* ==== 修改分类参数 end ===== */
+
+    /* ==== 删除分类参数 start ===== */
+    deleteParams(id) {
+      console.log("需要删除的id:" + id);
+      this.$confirm("此操作将永久删除该参数, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          // 发送请求删除参数
+          this.$http
+            .delete(`categories/${this.computedCateId}/attributes/${id}`)
+            .then(({ data: res }) => {
+              console.log("delete参数:", res);
+              if (res.meta.status != 200) {
+                return this.$message.error("删除参数失败");
+              }
+              // 删除成功
+              this.$notify.success({
+                title: "删除成功",
+                message: "删除参数成功",
+              });
+              // 重新获取参数信息
+              this.getCategoryParams();
+            });
+        })
+        .catch(() => {});
+    },
+    /* ==== 删除分类参数 end ===== */
+    /* 对分类参数标签的处理 */
+
+    // 显示分类标签属性的输入框
+    showInput(attr) {
+      // 显示输入框
+      attr.inputVisible = true;
+      // 自动获取焦点
+      this.$nextTick(() => {
+        // console.log("vue", this.$refs.saveTagInputRef);
+        this.$refs.saveTagInputRef.$refs.input.focus();
+      });
+    },
+    // 在分类标签中按下enter或失去焦点时触发的函数
+    handleInputConfirm(attr) {
+      // console.log("handleInputConfirm:",attr)
+      if (attr.inputValue.trim().length === 0) {
+        // 清空输入的数据
+        attr.inputValue = "";
+        // 切换输入框状态(关闭)
+        attr.inputVisible = false;
+        return;
+      }
+      // 关闭输入框
+      // 将新数据添加到原来的数组中,在这里已经实现了前端的展示
+      attr.attr_vals.push(attr.inputValue);
+
+      let attr_vals = attr.attr_vals.join(" ");
+      let addValus = {
+        attr_name: attr.attr_name,
+        attr_sel: this.activeTabName,
+        attr_vals: attr_vals,
+      };
+      console.log("添加标签时,发送给后端的数据:", addValus);
+
+      // 发送ajax请求给后端
+      this.$http
+        .put(
+          `categories/${this.computedCateId}/attributes/${attr.attr_id}`,
+          addValus
+        )
+        .then(({ data: res }) => {
+          console.log("update响应参数:", res);
+          if (res.meta.status != 200) {
+            return this.$message.error("修改标签失败");
+          }
+          // 重新获取参数信息
+          // 请求成功后,关闭输入框,将输入框置空
+          attr.inputVisible = false;
+          attr.inputValue = "";
+        });
+    },
+    // 更新标签数据到后端
+    updateParamsTag(attr) {
+      let attr_vals = attr.attr_vals.join(" ");
+      let addValus = {
+        attr_name: attr.attr_name,
+        attr_sel: this.activeTabName,
+        attr_vals: attr_vals,
+      };
+      console.log("添加标签时,发送给后端的数据:", addValus);
+
+      // 发送ajax请求给后端
+      this.$http
+        .put(
+          `categories/${this.computedCateId}/attributes/${attr.attr_id}`,
+          addValus
+        )
+        .then(({ data: res }) => {
+          console.log("update响应参数:", res);
+          if (res.meta.status != 200) {
+            return this.$message.error("修改标签失败");
+          }
+          // 重新获取参数信息
+          // 请求成功后,关闭输入框,将输入框置空
+          attr.inputVisible = false;
+          attr.inputValue = "";
+        });
+    },
+    deleteAttrTag(index, attr) {
+      console.log(index, attr);
+      attr.attr_vals.splice(index, 1);
+      // 更新数据库数据
+      this.updateParamsTag(attr);
+    },
   },
 };
 </script>
@@ -330,5 +579,21 @@ export default {
 <style lang="less" scoped>
 .cat_opt {
   margin-top: 15px;
+}
+
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
 }
 </style>
