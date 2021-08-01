@@ -20,13 +20,12 @@
             <el-tag v-if="scope.row.level === 0">一级</el-tag>
             <el-tag v-else-if="scope.row.level === 1" type="success">二级</el-tag>
             <el-tag v-else-if="scope.row.level === 2" type="warning">三级</el-tag>
-
           </template>
 
           <!--  <template v-slot="scope">
               {{scope}}
          
-          </template> -->
+          </template>-->
         </el-table-column>
       </el-table>
     </el-card>
@@ -35,27 +34,27 @@
 
 <script>
 export default {
-  name: "Rights",
+  name: 'Rights',
   data() {
     return {
       // 权限列表数据
       rightList: [],
-    };
+    }
   },
   mounted() {
-    this.getRightList();
+    this.getRightList()
   },
   methods: {
     getRightList() {
-      this.$http.get("rights/list").then(({data: res}) => {
-        console.log(res);
+      this.$http.get('rights/list').then(({ data: res }) => {
+        console.log(res)
         if (res.meta.status !== 200)
-          return this.$message.error("获取权限列表失败");
-        this.rightList = res.data;
-      });
+          return this.$message.error('获取权限列表失败')
+        this.rightList = res.data
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -7,16 +7,16 @@
 
 <script>
 export default {
-  name: "Welcome",
+  name: 'Welcome',
   data() {
     return {
-      username: "izayoirinn",
-    };
+      username: 'izayoirinn',
+    }
   },
-  mounted(){
-    window.sessionStorage.removeItem('activePath');
-  }
-};
+  mounted() {
+    window.sessionStorage.removeItem('activePath')
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -9,9 +9,9 @@
 
 <script>
 export default {
-  name: "BreadCrumb",
-  props: ["title"],
-};
+  name: 'BreadCrumb',
+  props: ['title'],
+}
 </script>
 
 <style>

@@ -12,7 +12,9 @@ import Roles from '../pages/power/Roles.vue'
 import Category from '../pages/goods/Category.vue'
 import Params from '../pages/goods/Params.vue'
 import GoodsList from '../pages/goods/List.vue'
-import AddGoods from '@/pages/goods/AddGoods'
+import AddGoods from '../pages/goods/AddGoods'
+import Order from "../pages/order/Order";
+
 Vue.use(VueRouter);
 // 2. 定义路由
 
@@ -98,6 +100,7 @@ const routes = [
                     title: "商品参数"
                 },
             },
+
             /* 商品列表 */
             {
                 name: "goodslist",
@@ -115,6 +118,16 @@ const routes = [
                 component: AddGoods,
                 meta: {
                     title: "商品添加"
+                },
+            },
+
+            /* 订单 */
+            {
+                name: "orders",
+                path: "/orders",
+                component: Order,
+                meta: {
+                    title: "订单列表"
                 },
             },
 
