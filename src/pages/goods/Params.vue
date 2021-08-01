@@ -114,7 +114,7 @@
           <!-- TODO 共用一个表格展示 静态属性表格展示 -->
           <el-table stripe border :data="onlyTabData">
             <el-table-column type="expand">
-                 <!-- 展开列数据 -->
+              <!-- 展开列数据 -->
               <template v-slot="scoped">
                 <!-- 遍历分类参数的tag -->
                 <el-tag
@@ -270,6 +270,10 @@ export default {
       inputVisible: false,
       inputValue: "",
       /* ==== 修改分类参数 end ===== */
+
+      /* isSave : 在添加商品参数信息时,按下enter和失去焦点可能同时触发,
+      可能会导致发送两个请求到后端，所以需要处理 */
+      isSave: false,
     };
   },
   computed: {
@@ -502,10 +506,16 @@ export default {
     },
     // 在分类标签中按下enter或失去焦点时触发的函数
     handleInputConfirm(attr) {
+      if (this.isSave === true) {
+        return;
+      } else {
+        this.isSave = true;
+      }
       // console.log("handleInputConfirm:",attr)
       if (attr.inputValue.trim().length === 0) {
         // 清空输入的数据
         attr.inputValue = "";
+        this.isSave = false;
         // 切换输入框状态(关闭)
         attr.inputVisible = false;
         return;
@@ -521,7 +531,8 @@ export default {
         attr_vals: attr_vals,
       };
       console.log("添加标签时,发送给后端的数据:", addValus);
-
+      // 关闭显示输入框
+      attr.inputVisible = false;
       // 发送ajax请求给后端
       this.$http
         .put(
@@ -535,8 +546,9 @@ export default {
           }
           // 重新获取参数信息
           // 请求成功后,关闭输入框,将输入框置空
-          attr.inputVisible = false;
           attr.inputValue = "";
+          // 修改标志位
+          this.isSave = false;
         });
     },
     // 更新标签数据到后端
@@ -548,7 +560,8 @@ export default {
         attr_vals: attr_vals,
       };
       console.log("添加标签时,发送给后端的数据:", addValus);
-
+      // 关闭显示输入框
+      attr.inputVisible = false;
       // 发送ajax请求给后端
       this.$http
         .put(

@@ -11,17 +11,20 @@ import Rights from '../pages/power/Rights.vue'
 import Roles from '../pages/power/Roles.vue'
 import Category from '../pages/goods/Category.vue'
 import Params from '../pages/goods/Params.vue'
-
+import GoodsList from '../pages/goods/List.vue'
+import AddGoods from '@/pages/goods/AddGoods'
 Vue.use(VueRouter);
 // 2. 定义路由
 
 const routes = [
     // 路由规则
+    /* 首页 */
     {
         path: "/",
         // 重定向到登录页面
         redirect: "/login"
     },
+    /* 登录页面 */
     {
         name: 'login',
         path: '/login',
@@ -30,6 +33,7 @@ const routes = [
             title: "登录"
         }
     },
+    /* 主页 */
     {
         name: 'home',
         path: '/home',
@@ -38,6 +42,7 @@ const routes = [
             title: "主页"
         },
         redirect: "/welcome",
+        /* 主页子页面 */
         children: [
             /* 欢迎页 */
             {
@@ -93,6 +98,26 @@ const routes = [
                     title: "商品参数"
                 },
             },
+            /* 商品列表 */
+            {
+                name: "goodslist",
+                path: "/goods",
+                component: GoodsList,
+                meta: {
+                    title: "商品列表"
+                },
+
+            },
+            /* 商品添加 */
+            {
+                name: "addGoods",
+                path: "/goods/add",
+                component: AddGoods,
+                meta: {
+                    title: "商品添加"
+                },
+            },
+
         ]
     },
 

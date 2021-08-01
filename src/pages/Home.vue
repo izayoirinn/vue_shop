@@ -3,7 +3,7 @@
     <!-- 头部区域 -->
     <el-header>
       <div>
-        <img class="logo-img" src="../assets/rinn.png" alt="" @click="toHome" />
+        <img class="logo-img" src="../assets/rinn.png" alt="" @click="toHome"/>
         <span>电商后台管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
@@ -14,21 +14,21 @@
       <el-aside :width="isCollapse ? '64px' : '200px'">
         <div class="toggle-button" @click="toggleCollapse">|||</div>
         <el-menu
-          :collapse="isCollapse"
-          :collapse-transition="false"
-          :default-active="activePath"
-          unique-opened
-          class="el-menu-vertical-demo"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#409eef"
-          router
+            :collapse="isCollapse"
+            :collapse-transition="false"
+            :default-active="activePath"
+            unique-opened
+            class="el-menu-vertical-demo"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#409eef"
+            router
         >
           <!-- 一级导航 -->
           <el-submenu
-            v-for="item in menuList"
-            :index="item.id + ''"
-            :key="item.id"
+              v-for="item in menuList"
+              :index="item.id + ''"
+              :key="item.id"
           >
             <!-- 一级导航的模板区域 -->
             <template slot="title">
@@ -39,10 +39,10 @@
             </template>
             <!-- 二级导航 -->
             <el-menu-item
-              v-for="subItem in item.children"
-              :index="'/' + subItem.path"
-              :key="subItem.id"
-              @click="saveNavState('/' + subItem.path)"
+                v-for="subItem in item.children"
+                :index="'/' + subItem.path"
+                :key="subItem.id"
+                @click="saveNavState('/' + subItem.path)"
             >
               <!-- 二级导航模板区域 -->
               <template slot="title">
@@ -101,7 +101,7 @@ export default {
     },
     // 获取所有的菜单
     getMenuList() {
-      this.$http.get("menus").then(({ data: res }) => {
+      this.$http.get("menus").then(({data: res}) => {
         // console.log("菜单列表:", res);
         if (res.meta.status !== 200) this.$message.error(res.meta.msg);
         this.menuList = res.data;
@@ -123,15 +123,16 @@ export default {
       this.activePath = activePath;
     },
 
-    
+
   },
 };
 </script>
 
-<style lang="less" >
+<style lang="less">
 .el-container {
   height: 100%;
 }
+
 .el-header {
   background-color: rgb(84 92 100);
   display: flex;
@@ -140,14 +141,17 @@ export default {
   align-items: center;
   color: #fff;
   font-size: 20px;
+
   > div {
     display: flex;
     align-items: center;
+
     span {
       margin-left: 15px;
     }
   }
 }
+
 .el-aside {
   background-color: rgb(84 92 100);
   /* 定义过渡效果 */
@@ -158,13 +162,16 @@ export default {
     border-right: none;
   }
 }
+
 .el-main {
   background-color: #eaedf1;
 }
+
 .logo-img {
   height: 50px;
   border-radius: 50%;
 }
+
 .toggle-button {
   background-color: #4a5064;
   font-size: 10px;
@@ -174,11 +181,13 @@ export default {
   letter-spacing: 0.2em;
   cursor: pointer;
 }
+
 /////////////////////给子组件定义的样式//////////////////////////////
 // 卡片框和面包屑导航
 .el-breadcrumb {
   margin-bottom: 15px;
 }
+
 .el-card {
   width: 90%;
   margin: auto;

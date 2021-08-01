@@ -17,14 +17,10 @@
         <el-table-column label="权限等级">
           <template v-slot="scope">
             <!-- {{scope.row}} -->
-            <el-tag v-if="scope.row.level == 0">一级</el-tag>
+            <el-tag v-if="scope.row.level === 0">一级</el-tag>
+            <el-tag v-else-if="scope.row.level === 1" type="success">二级</el-tag>
+            <el-tag v-else-if="scope.row.level === 2" type="warning">三级</el-tag>
 
-            <el-tag v-else-if="scope.row.level == 1" type="success"
-              >二级</el-tag
-            >
-            <el-tag v-else-if="scope.row.level == 2" type="warning"
-              >三级</el-tag
-            >
           </template>
 
           <!--  <template v-slot="scope">
@@ -51,7 +47,7 @@ export default {
   },
   methods: {
     getRightList() {
-      this.$http.get("rights/list").then(({ data: res }) => {
+      this.$http.get("rights/list").then(({data: res}) => {
         console.log(res);
         if (res.meta.status !== 200)
           return this.$message.error("获取权限列表失败");

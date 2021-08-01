@@ -1,14 +1,29 @@
 /* 全局样式表 */
-html,body,#app{
+html,
+body,
+#app {
     height: 100%;
     margin: 0%;
     padding: 0%;
     min-width: 1366px;
 }
-.el-table{
+
+.el-table {
     margin-top: 20px;
     /* font-size: 12px; */
 }
-.el-pagination{
+
+.el-pagination {
     margin-top: 15px;
+}
+
+.el-steps {
+    margin: 20px 0;
+}
+
+.el-step__title {
+    font-size: 13px;
+}
+.ql-editor{
+    min-height: 300px;
 }

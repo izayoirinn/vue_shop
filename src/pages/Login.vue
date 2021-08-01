@@ -3,21 +3,21 @@
     <div class="login_box">
       <!-- 登录头像区  -->
       <div class="avatar_box">
-        <img src="../assets/logo.png" alt="" />
+        <img src="../assets/logo.png" alt=""/>
       </div>
       <!-- 表单区 -->
       <el-form
-        ref="loginFormRef"
-        :model="loginForm"
-        :rules="loginFormRules"
-        class="login_form"
+          ref="loginFormRef"
+          :model="loginForm"
+          :rules="loginFormRules"
+          class="login_form"
       >
         <!-- 用户名 使用第三方的图标 -->
         <el-form-item prop="username">
           <el-input
-            prefix-icon="iconfont icon-user"
-            placeholder="请输入用户名"
-            v-model="loginForm.username"
+              prefix-icon="iconfont icon-user"
+              placeholder="请输入用户名"
+              v-model="loginForm.username"
           ></el-input>
         </el-form-item>
         <!-- 密码 使用element-ui中自带的图标 -->
@@ -28,11 +28,11 @@
         -->
         <el-form-item prop="password">
           <el-input
-            prefix-icon="el-icon-lock"
-            placeholder="请输入密码"
-            v-model="loginForm.password"
-            show-password
-            @keyup.enter.native="login"
+              prefix-icon="el-icon-lock"
+              placeholder="请输入密码"
+              v-model="loginForm.password"
+              show-password
+              @keyup.enter.native="login"
           ></el-input>
         </el-form-item>
         <!-- 按钮区 -->
@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  naem: "Login",
+  name: "Login",
   data() {
     return {
       // 登录表单的数据绑定
@@ -57,7 +57,7 @@ export default {
       },
       loginFormRules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
+          {required: true, message: "请输入用户名", trigger: "blur"},
           {
             min: 3,
             max: 16,
@@ -66,7 +66,7 @@ export default {
           },
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
+          {required: true, message: "请输入密码", trigger: "blur"},
           {
             min: 6,
             max: 16,
@@ -90,7 +90,7 @@ export default {
         // 判断参数是否合法
         if (!valid) return;
         // { data: res }: 解构赋值
-        this.$http.post("login", this.loginForm).then(({ data: res }) => {
+        this.$http.post("login", this.loginForm).then(({data: res}) => {
           // console.log(res);
           if (res.meta.status != 200)
             return this.$message({
@@ -126,12 +126,14 @@ export default {
   justify-content: space-around;
   align-items: center;
 }
+
 .login_box {
   position: relative;
   width: 450px;
   height: 300px;
   background-color: #fff;
   border-radius: 3px;
+
   .avatar_box {
     height: 130px;
     width: 130px;
@@ -141,6 +143,7 @@ export default {
     box-shadow: 0 0 10px #ddd;
     margin: -65px auto;
     background-color: #fff;
+
     img {
       width: 100%;
       height: 100%;
@@ -150,6 +153,7 @@ export default {
     }
   }
 }
+
 .login_form {
   position: absolute;
   bottom: 10px;
@@ -158,6 +162,7 @@ export default {
   // https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing
   box-sizing: border-box;
 }
+
 .btns {
   display: flex;
   justify-content: flex-end;

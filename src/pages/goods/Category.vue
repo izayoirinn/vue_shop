@@ -1,12 +1,8 @@
 <template>
   <div>
     <!-- 面包屑导航区 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
-
+    <MyBreadCrumb :title="title"></MyBreadCrumb>
+    
     <!-- 卡片视图 -->
     <el-card>
       <!-- 添加分类按钮 -->
@@ -136,10 +132,18 @@
 </template>
 
 <script>
+import MyBreadCrumb from "@/components/MyBreadCrumb";
 export default {
   name: "Category",
+  components: {
+    MyBreadCrumb,
+  },
   data() {
     return {
+      title: {
+        firstNav: "商品管理",
+        secondNav: "商品分类",
+      },
       /* 分页条件 */
       queryInfo: {
         type: 3,
@@ -388,12 +392,12 @@ export default {
             if (res.meta.status != 200) {
               return this.$message.error("删除分类失败");
             }
-              this.$notify.success({
-                title: "成功",
-                message: "删除商品分类成功",
-              });
-              /* 刷新数据 */
-              this.getCategroyList();
+            this.$notify.success({
+              title: "成功",
+              message: "删除商品分类成功",
+            });
+            /* 刷新数据 */
+            this.getCategroyList();
           });
         })
         .catch(() => {});
