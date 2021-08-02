@@ -100,7 +100,6 @@
           :timestamp="activity.time"
         >{{activity.context}}</el-timeline-item>
       </el-timeline>
-
       <span slot="footer" class="dialog-footer">
         <el-button @click="progressDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="progressDialogVisible = false">确 定</el-button>

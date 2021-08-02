@@ -25,7 +25,11 @@
           router
         >
           <!-- 一级导航 -->
-          <el-submenu v-for="item in menuList" :index="item.id + ''" :key="item.id">
+          <el-submenu
+            v-for="item in menuList"
+            :index="item.id + ''"
+            :key="item.id"
+          >
             <!-- 一级导航的模板区域 -->
             <template slot="title">
               <!-- 图标 -->
@@ -80,46 +84,46 @@ export default {
       isCollapse: false,
       // 被激活的路径地址
       activePath: '',
-    }
+    };
   },
   mounted() {
     // 获取所有的菜单
-    this.getMenuList()
+    this.getMenuList();
     // 判断当前激活路径
-    this.activePath = window.sessionStorage.getItem('activePath')
+    this.activePath = window.sessionStorage.getItem('activePath');
   },
   methods: {
     // 退出登录
     logout() {
       // TODO 删除后端token
-      window.sessionStorage.clear()
-      this.$router.push('/login')
+      window.sessionStorage.clear();
+      this.$router.push('/login');
     },
     // 获取所有的菜单
     getMenuList() {
       this.$http.get('menus').then(({ data: res }) => {
         // console.log("菜单列表:", res);
-        if (res.meta.status !== 200) this.$message.error(res.meta.msg)
-        this.menuList = res.data
-      })
+        if (res.meta.status !== 200) this.$message.error(res.meta.msg);
+        this.menuList = res.data;
+      });
     },
     // 切换显示左侧效果
     toggleCollapse() {
-      this.isCollapse = !this.isCollapse
+      this.isCollapse = !this.isCollapse;
     },
     // 跳转首页
     toHome() {
       if (this.$route.path !== '/welcome') {
-        this.$router.push('/welcome')
+        this.$router.push('/welcome');
       }
     },
     // 保存左侧栏点击状态
     saveNavState(activePath) {
-      window.sessionStorage.setItem('activePath', activePath)
-      this.activePath = activePath
+      window.sessionStorage.setItem('activePath', activePath);
+      this.activePath = activePath;
     },
   },
-}
+};
 </script>
 
 <style lang="less">

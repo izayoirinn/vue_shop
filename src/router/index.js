@@ -131,8 +131,8 @@ const routes = [
                 },
             },
 
-             /* 订单 */
-             {
+            /* 数据统计 */
+            {
                 name: "reports",
                 path: "/reports",
                 component: Report,
@@ -140,7 +140,6 @@ const routes = [
                     title: "数据报表"
                 },
             },
-
         ]
     },
 
