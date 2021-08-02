@@ -14,7 +14,7 @@ import Params from '../pages/goods/Params.vue'
 import GoodsList from '../pages/goods/List.vue'
 import AddGoods from '../pages/goods/AddGoods'
 import Order from "../pages/order/Order";
-
+import Report from '@/pages/report/Report'
 Vue.use(VueRouter);
 // 2. 定义路由
 
@@ -131,6 +131,15 @@ const routes = [
                 },
             },
 
+            /* 数据统计 */
+            {
+                name: "reports",
+                path: "/reports",
+                component: Report,
+                meta: {
+                    title: "数据报表"
+                },
+            },
         ]
     },
 
