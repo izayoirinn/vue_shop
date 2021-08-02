@@ -257,6 +257,7 @@ export default {
   methods: {
     /* 获取角色列表信息 */
     getRoleList() {
+       this.loading = true;
       this.$http.get('roles').then(({ data: res }) => {
         console.log('roleData:', res)
         if (res.meta.status != 200)

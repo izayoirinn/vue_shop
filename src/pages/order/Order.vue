@@ -14,33 +14,44 @@
             @keyup.enter.native="searchOrderList"
             @clear="searchOrderList"
           >
-            <el-button slot="append" @click="searchOrderList" icon="el-icon-search"></el-button>
+            <el-button
+              slot="append"
+              @click="searchOrderList"
+              icon="el-icon-search"
+            ></el-button>
           </el-input>
         </el-col>
       </el-row>
 
       <!-- 订单列表数据 -->
-      <el-table :data="orderList" border stripe>
+      <el-table :data="orderList" v-loading="loading" border stripe>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="order_number" label="订单编号"></el-table-column>
         <el-table-column prop="order_price" label="订单价格"></el-table-column>
         <el-table-column prop="pay_status" label="是否付款">
           <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.pay_status == 0">未付款</el-tag>
-            <el-tag type="success" v-if="scope.row.pay_status == 1">已付款</el-tag>
+            <el-tag type="danger" v-if="scope.row.pay_status == 0"
+              >未付款</el-tag
+            >
+            <el-tag type="success" v-if="scope.row.pay_status == 1"
+              >已付款</el-tag
+            >
           </template>
         </el-table-column>
         <el-table-column prop="is_send" label="是否发货"></el-table-column>
         <el-table-column prop="create_time" label="下单时间">
           <template slot-scope="scope">
-            {{
-            scope.row.create_time | dateFormat
-            }}
+            {{ scope.row.create_time | dateFormat }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" @click="showBox(scope.row)" size="mini" icon="el-icon-edit"></el-button>
+            <el-button
+              type="primary"
+              @click="showBox(scope.row)"
+              size="mini"
+              icon="el-icon-edit"
+            ></el-button>
             <el-button
               type="success"
               size="mini"
@@ -65,7 +76,12 @@
     </el-card>
 
     <!-- 修改地址对话框 -->
-    <el-dialog title="修改地址" :visible.sync="addDialogVisible" @close="closeAddDialog" width="40%">
+    <el-dialog
+      title="修改地址"
+      :visible.sync="addDialogVisible"
+      @close="closeAddDialog"
+      width="40%"
+    >
       <!-- 表单数据 -->
       <el-form
         :model="addressForm"
@@ -86,32 +102,41 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="addDialogVisible = false"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
 
     <!-- 快递信息对话框 -->
-    <el-dialog title="物流信息" :visible.sync="progressDialogVisible" width="40%">
+    <el-dialog
+      title="物流信息"
+      :visible.sync="progressDialogVisible"
+      width="40%"
+    >
       <!-- 时间线 -->
       <el-timeline>
         <el-timeline-item
           v-for="(activity, index) in progressInfo"
           :key="index"
           :timestamp="activity.time"
-        >{{activity.context}}</el-timeline-item>
+          >{{ activity.context }}</el-timeline-item
+        >
       </el-timeline>
       <span slot="footer" class="dialog-footer">
         <el-button @click="progressDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="progressDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="progressDialogVisible = false"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import MyBreadCrumb from '../../components/MyBreadCrumb'
-import citydata from '@/assets/js/citydata'
-import progressInfo from '@/pages/order/progressInfo'
+import MyBreadCrumb from '../../components/MyBreadCrumb';
+import citydata from '@/assets/js/citydata';
+import progressInfo from '@/pages/order/progressInfo';
 export default {
   name: 'Order',
   components: {
@@ -149,51 +174,55 @@ export default {
       cityData: citydata,
       progressDialogVisible: false,
       progressInfo: progressInfo,
-    }
+      /* 加载 */
+      loading: true,
+    };
   },
   mounted() {
-    this.getOrderList()
+    this.getOrderList();
   },
   methods: {
     getOrderList() {
+      //  this.loading = true;
       this.$http
         .get('orders', {
           params: this.queryInfo,
         })
         .then(({ data: res }) => {
-          console.log(res)
+          console.log(res);
           if (res.meta.status !== 200) {
-            return this.$message.error('获取订单信息失败')
+            return this.$message.error('获取订单信息失败');
           }
           // 获取到订单信息,进行页面渲染
-          this.orderList = res.data.goods
-          this.total = res.data.total
-        })
+          this.orderList = res.data.goods;
+          this.total = res.data.total;
+          this.loading = false;
+        });
     },
     // 搜索订单列表,需要对当前页进行置1处理
     searchOrderList() {
-      this.queryInfo.pagenum = 1
-      this.getOrderList()
+      this.queryInfo.pagenum = 1;
+      this.getOrderList();
     },
     handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize
-      this.searchOrderList()
+      this.queryInfo.pagesize = newSize;
+      this.searchOrderList();
     },
     handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage
-      this.getOrderList()
+      this.queryInfo.pagenum = newPage;
+      this.getOrderList();
     },
     /* 显示修改地址的对话框 */
     showBox(order) {
-      console.log(order)
-      this.addDialogVisible = true
+      console.log(order);
+      this.addDialogVisible = true;
     },
     /* 关闭修改地址的对话框 */
     closeAddDialog() {
-      this.$refs.addressFormRef.resetFields()
+      this.$refs.addressFormRef.resetFields();
     },
     showProgessBox(order) {
-      console.log(order)
+      console.log(order);
       /*  this.$http
         .get(`/kuaidi/1106975712662`)
         .then(({ data: res }) => {
@@ -204,10 +233,10 @@ export default {
         })
         .catch(() => {}) */
 
-      this.progressDialogVisible = true
+      this.progressDialogVisible = true;
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

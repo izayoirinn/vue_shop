@@ -15,6 +15,8 @@ import GoodsList from '../pages/goods/List.vue'
 import AddGoods from '../pages/goods/AddGoods'
 import Order from "../pages/order/Order";
 import Report from '@/pages/report/Report'
+
+
 Vue.use(VueRouter);
 // 2. 定义路由
 
@@ -150,6 +152,7 @@ const router = new VueRouter({
 })
 // 为路由对象,添加beforeEach导航守卫
 router.beforeEach((to, from, next) => {
+
     // 如果用户访问的是登录页,直接放行
     if (to.path === "/login") return next();
     // 从sessionStorage中获取到的保存的token值
@@ -163,6 +166,7 @@ router.beforeEach((to, from, next) => {
 // afterEach导航守卫 ,修改title
 // eslint-disable-next-line no-unused-vars
 router.afterEach((to, _from) => {
+
     document.title = to.meta.title;
 });
 export default router;

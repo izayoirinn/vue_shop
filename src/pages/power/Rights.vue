@@ -9,7 +9,13 @@
     <!-- 卡片区域 -->
     <el-card shadow="never">
       <!-- 权限列表表格 -->
-      <el-table :data="rightList" border stripe height="750">
+      <el-table
+        :data="rightList"
+        v-loading="loading"
+        border
+        stripe
+        height="750"
+      >
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="authName" label="权限名称"></el-table-column>
         <el-table-column prop="path" label="权限路径"></el-table-column>
@@ -18,8 +24,12 @@
           <template v-slot="scope">
             <!-- {{scope.row}} -->
             <el-tag v-if="scope.row.level === 0">一级</el-tag>
-            <el-tag v-else-if="scope.row.level === 1" type="success">二级</el-tag>
-            <el-tag v-else-if="scope.row.level === 2" type="warning">三级</el-tag>
+            <el-tag v-else-if="scope.row.level === 1" type="success"
+              >二级</el-tag
+            >
+            <el-tag v-else-if="scope.row.level === 2" type="warning"
+              >三级</el-tag
+            >
           </template>
 
           <!--  <template v-slot="scope">
@@ -39,23 +49,25 @@ export default {
     return {
       // 权限列表数据
       rightList: [],
-    }
+      loading: true,
+    };
   },
   mounted() {
-    this.getRightList()
+    this.getRightList();
   },
   methods: {
     getRightList() {
+       this.loading = true;
       this.$http.get('rights/list').then(({ data: res }) => {
-        console.log(res)
+        console.log(res);
         if (res.meta.status !== 200)
-          return this.$message.error('获取权限列表失败')
-        this.rightList = res.data
-      })
+          return this.$message.error('获取权限列表失败');
+        this.rightList = res.data;
+        this.loading = false;
+      });
     },
   },
-}
+};
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

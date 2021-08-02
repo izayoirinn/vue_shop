@@ -231,15 +231,15 @@
 
 <script>
 export default {
-  name: "Users",
+  name: 'Users',
   data() {
     var checkMobile = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("手机号不能为空"));
+        return callback(new Error('手机号不能为空'));
       }
       var mobileReg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
       if (!mobileReg.test(value)) {
-        return callback(new Error("手机号格式错误"));
+        return callback(new Error('手机号格式错误'));
       }
       callback();
     };
@@ -247,7 +247,7 @@ export default {
     return {
       // 获取用户列表的参数对象
       queryInfo: {
-        query: "",
+        query: '',
         pagenum: 1,
         pagesize: 5,
       },
@@ -261,56 +261,56 @@ export default {
       addUserFormVisible: false,
       // 用户模态框表单数据
       addUserForm: {
-        username: "",
-        password: "",
-        email: "",
-        mobile: "",
+        username: '',
+        password: '',
+        email: '',
+        mobile: '',
       },
-      userformLabelWidth: "70px",
+      userformLabelWidth: '70px',
       // 用户表单规则
       userFormRules: {
         // 验证用户名参数
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
           {
             min: 3,
             max: 11,
-            message: "用户名长度在 3 到 11 个字符",
-            trigger: "blur",
+            message: '用户名长度在 3 到 11 个字符',
+            trigger: 'blur',
           },
         ],
         // 验证密码参数
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
+          { required: true, message: '请输入密码', trigger: 'blur' },
           {
             min: 6,
             max: 16,
-            message: "密码长度在 6 到 16 个字符",
-            trigger: "blur",
+            message: '密码长度在 6 到 16 个字符',
+            trigger: 'blur',
           },
         ],
         // 验证邮箱参数
         email: [
-          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
           {
-            type: "email",
-            message: "请输入正确的邮箱地址",
-            trigger: ["blur"],
+            type: 'email',
+            message: '请输入正确的邮箱地址',
+            trigger: ['blur'],
           },
         ],
 
         // 使用自定义手机验证
-        mobile: [{ validator: checkMobile, trigger: "blur" }],
+        mobile: [{ validator: checkMobile, trigger: 'blur' }],
       },
       // 修改用户对话框
       editDialogVisible: false,
       // 查询到的用户信息对象
       editUserForm: {
-        username: "",
-        id: "",
-        email: "",
-        mobile: "",
-        rid: "",
+        username: '',
+        id: '',
+        email: '',
+        mobile: '',
+        rid: '',
       },
       // 角色分配对话框状态显示
       roleDialogVisible: false,
@@ -319,7 +319,7 @@ export default {
 
       // 角色信息
       roleList: [],
-      checkedRoleId: "",
+      checkedRoleId: '',
     };
   },
   mounted() {
@@ -329,18 +329,19 @@ export default {
   methods: {
     // 获取用户列表信息
     getUserList() {
+      this.loading = true;
       this.$http
-        .get("users", {
+        .get('users', {
           params: this.queryInfo,
         })
-        .then(({data:res}) => {
+        .then(({ data: res }) => {
           // console.log("@Users", res);
           if (res.meta.status != 200)
-            return this.$message.error("获取用户列表失败!");
+            return this.$message.error('获取用户列表失败!');
           this.userList = res.data.users;
           this.total = res.data.total;
           this.currentPage = res.data.pagenum;
-          this.loading = false
+          this.loading = false;
         });
     },
     // 搜索显示用户信息,将页码置为1
@@ -352,23 +353,23 @@ export default {
     // 添加用户
     addUser() {
       // 获取表单数据
-      console.log("addUser user表单ref:", this.$refs.userAddForm);
+      console.log('addUser user表单ref:', this.$refs.userAddForm);
       this.$refs.userAddForm.validate((valid) => {
         if (!valid) return;
         // 通过表单验证
-        console.log("表单验证成功");
+        console.log('表单验证成功');
         // 发送ajax请求
-        this.$http.post("users", this.addUserForm).then(({ data: res }) => {
+        this.$http.post('users', this.addUserForm).then(({ data: res }) => {
           if (res.meta.status != 201) {
             return this.$notify.error({
-              title: "错误",
-              message: "创建用户失败!",
+              title: '错误',
+              message: '创建用户失败!',
             });
           }
           // 创建用户成功
           this.$notify.success({
-            title: "成功",
-            message: "创建用户成功!",
+            title: '成功',
+            message: '创建用户成功!',
           });
           // 刷新页面数据
           this.getUserList();
@@ -378,19 +379,19 @@ export default {
       });
     },
     deleteUser(id) {
-      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       })
         .then(() => {
           // 发送ajax请求
-          this.$http.delete("/users/" + id).then(({ data: res }) => {
+          this.$http.delete('/users/' + id).then(({ data: res }) => {
             if (res.meta.status != 200)
-              return this.$message.error("删除用户失败");
+              return this.$message.error('删除用户失败');
             this.$message({
-              type: "success",
-              message: "删除成功!",
+              type: 'success',
+              message: '删除成功!',
             });
             // 刷新用户列表
             this.getUserList();
@@ -406,7 +407,7 @@ export default {
       // 通过id获取用户数据
       this.$http.get(`/users/${id}`).then(({ data: res }) => {
         if (res.meta.status !== 200)
-          return this.$message.error("查询用户数据失败");
+          return this.$message.error('查询用户数据失败');
         this.editUserForm = res.data;
         // 将用户原本的数据
       });
@@ -432,12 +433,12 @@ export default {
         .then(({ data: res }) => {
           // 响应结果不为200
           if (res.meta.status != 200) {
-            this.$message.error("修改状态失败!");
+            this.$message.error('修改状态失败!');
             user.mg_state = !user.mg_state;
             return;
           }
           // 修改状态成功
-          this.$message.success("修改状态成功!");
+          this.$message.success('修改状态成功!');
         });
     },
     // 重置用户的表单
@@ -457,9 +458,9 @@ export default {
               mobile: this.editUserForm.mobile,
             })
             .then(({ data: res }) => {
-              console.log("@@", res);
+              console.log('@@', res);
               if (res.meta.status != 200)
-                return this.$message.error("修改用户失败");
+                return this.$message.error('修改用户失败');
 
               // 重新获取用户列表
               this.getUserList();
@@ -467,9 +468,9 @@ export default {
               this.editDialogVisible = false;
               // 提示用户
               this.$notify({
-                title: "成功",
-                message: "修改用户成功",
-                type: "success",
+                title: '成功',
+                message: '修改用户成功',
+                type: 'success',
               });
             });
         }
@@ -480,9 +481,9 @@ export default {
       // 获取用户数据
       this.userInfoForRole = userInfo;
       // 获取角色信息
-      this.$http.get("roles").then(({ data: res }) => {
+      this.$http.get('roles').then(({ data: res }) => {
         if (res.meta.status != 200) {
-          return this.$message.error("获取角色信息失败");
+          return this.$message.error('获取角色信息失败');
         }
         this.roleList = res.data;
       });
@@ -493,7 +494,7 @@ export default {
     // 保存用户的新角色
     saveRoleInfo() {
       if (!this.checkedRoleId) {
-        return this.$message.error("请选择要分配的角色");
+        return this.$message.error('请选择要分配的角色');
       }
 
       this.$http
@@ -501,9 +502,9 @@ export default {
           rid: this.checkedRoleId,
         })
         .then(({ data: res }) => {
-          console.log("分配新的角色响应体:", res);
+          console.log('分配新的角色响应体:', res);
           if (res.meta.status != 200) {
-            return this.$message.error("分配角色失败");
+            return this.$message.error('分配角色失败');
           }
           // 分配角色成功
           // 刷新页面数据
@@ -514,7 +515,7 @@ export default {
     },
     // 关闭分配角色的对话框
     setRoleDialogClosed() {
-      this.checkedRoleId = "";
+      this.checkedRoleId = '';
       this.userInfoForRole = {};
       this.roleList = [];
     },

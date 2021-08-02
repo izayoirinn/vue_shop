@@ -64,6 +64,10 @@ export default {
   },
   methods: {
     getEchartOption() {
+      /* 加载过度 */
+      let loadingInstance = this.$loading({
+        target: this.$refs.mainEcharts,
+      });
       this.$http.get('reports/type/1').then(({ data: res }) => {
         console.log('reports', res);
         if (res.meta.status !== 200) {
@@ -75,10 +79,18 @@ export default {
         var myChart = echarts.init(this.$refs.mainEcharts);
         // 绘制图表
         myChart.setOption(this.echartOption);
+        this.$nextTick(() => {
+          // 以服务的方式调用的 Loading 需要异步关闭
+          loadingInstance.close();
+        });
       });
     },
   },
 };
 </script>
 
-<style></style>
+<style lang="less" scoped>
+#main {
+  margin: 20px auto;
+}
+</style>

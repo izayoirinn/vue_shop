@@ -19,6 +19,10 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 Vue.use(VueQuillEditor)
+/* NProgress */
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 // 导入字体图标
 import './assets/fonts/iconfont.css';
 Vue.config.productionTip = false
@@ -35,7 +39,16 @@ Vue.prototype.baseURL = "http://timemeetyou.com:8889/api/private/v1/";
 // 拦截器为请求头添加token属性
 axios.interceptors.request.use(config => {
   // console.log('@', config);
+  // 顶部进度条加载
+  NProgress.start()
   config.headers.Authorization = window.sessionStorage.getItem("token");
+  return config;
+})
+
+axios.interceptors.response.use(config => {
+
+  // 顶部进度条完成
+  NProgress.done()
   return config;
 })
 
