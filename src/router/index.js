@@ -2,20 +2,39 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // 1. 定义 (路由) 组件。
-// 可以从其他文件 import 进来
-import Login from '../pages/Login.vue';
-import Home from '../pages/Home.vue';
-import Welcome from '../pages/Welcome.vue';
-import Users from '../pages/user/Users.vue';
-import Rights from '../pages/power/Rights.vue'
-import Roles from '../pages/power/Roles.vue'
-import Category from '../pages/goods/Category.vue'
-import Params from '../pages/goods/Params.vue'
-import GoodsList from '../pages/goods/List.vue'
-import AddGoods from '../pages/goods/AddGoods'
-import Order from "../pages/order/Order";
-import Report from '@/pages/report/Report'
 
+// 可以从其他文件 import 进来
+// 实现路由懒加载
+// import Login from '../pages/Login.vue';
+const Login = () => import( /* webpackChunkName: "login-home-welcome" */ '../pages/Login.vue')
+
+// import Home from '../pages/Home.vue';
+const Home = () => import( /* webpackChunkName: "login-home-welcome" */ '../pages/Home.vue')
+// import Welcome from '../pages/Welcome.vue';
+const Welcome = () => import( /* webpackChunkName: "login-home-welcome" */ '../pages/Welcome.vue')
+
+
+// import Users from '../pages/user/Users.vue';
+// import Rights from '../pages/power/Rights.vue'
+// import Roles from '../pages/power/Roles.vue'
+const Users = () => import( /* webpackChunkName: "user-rights-roles" */ '../pages/user/Users.vue')
+const Rights = () => import( /* webpackChunkName: "user-rights-roles" */ '../pages/power/Rights.vue')
+const Roles = () => import( /* webpackChunkName: "user-rights-roles" */ '../pages/power/Roles.vue')
+
+// import Category from '../pages/goods/Category.vue'
+// import Params from '../pages/goods/Params.vue'
+const Category = () => import( /* webpackChunkName: "category-params" */ '../pages/goods/Category.vue')
+const Params = () => import( /* webpackChunkName: "category-params" */ '../pages/goods/Params.vue')
+
+// import GoodsList from '../pages/goods/List.vue'
+// import AddGoods from '../pages/goods/AddGoods'
+const GoodsList = () => import( /* webpackChunkName: "goods-list-add" */ '../pages/goods/List.vue')
+const AddGoods = () => import( /* webpackChunkName: "goods-list-add" */ '../pages/goods/AddGoods')
+
+// import Order from "../pages/order/Order";
+// import Report from '@/pages/report/Report'
+const Order = () => import( /* webpackChunkName: "order-report" */ '../pages/order/Order')
+const Report = () => import( /* webpackChunkName: "order-report" */ '@/pages/report/Report')
 
 Vue.use(VueRouter);
 // 2. 定义路由
